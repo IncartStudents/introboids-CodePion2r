@@ -10,13 +10,7 @@
                 "C:/Users/Timofey/vcpkg/packages/imgui_x64-windows/**",
                 "${workspaceFolder}/cpp",
                 "C:/Users/Timofey/introboids-CodePion2r/cpp/**",
-                "C:/Users/Timofey/vcpkg/packages/opengl_x64-windows/**",
-                "C:/Users/Timofey/vcpkg/packages/glad_x64-windows/include/KHR/**",
-                "C:/Users/Timofey/vcpkg/packages/glad_x64-windows/share/glad/**",
-                "C:/Users/Timofey/vcpkg/packages/imgui_x64-windows/include/**",
-                "C:/Users/Timofey/imgui/**",
-                "C:/Users/Timofey/vcpkg/packages/imgui_x64-windows/include/**"
-                
+                "C:/Users/Timofey/vcpkg/packages/opengl_x64-windows/**" 
             ],
             "defines": [
                 "_DEBUG",
