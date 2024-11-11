@@ -45,12 +45,16 @@ class Boid {
 public:
     Vec2 position;
     Vec2 velocity;
+    Vec2 next_position; // Новое поле для следующей позиции
+    Vec2 next_velocity; // Новое поле для следующей скорости
     float max_speed;
     float max_force; // Максимальная сила для изменения направления
 
     Boid(float x, float y) : max_speed(2.0f), max_force(0.03f) { 
         position = { x, y };
         velocity = { static_cast<float>(rand() % 100) / 100 - 0.5f, static_cast<float>(rand() % 100) / 100 - 0.5f };
+        next_position = position; // Инициализация следующей позиции
+        next_velocity = velocity; // Инициализация следующей скорости
     }
 
     void update(const std::vector<Boid>& boids) {
@@ -59,17 +63,25 @@ public:
         Vec2 separation = computeSeparation(boids);
 
         // Комбинирование сил
-        velocity = velocity + alignment + cohesion + separation;
+        next_velocity = velocity + alignment + cohesion + separation;
 
         // Ограничение скорости
-        if (velocity.length() > max_speed) {
-            velocity = velocity.normalized() * max_speed;
+        if (next_velocity.length() > max_speed) {
+            next_velocity = next_velocity.normalized() * max_speed;
         }
 
-        // Обновление позиции
-        position = position + velocity;
+        // Обновление следующей позиции
+        next_position = position + next_velocity;
 
         // Обработка выхода за границы экрана
+        wrapAround();
+    }
+
+    void applyUpdates() {
+        // Применение обновлений после всех расчетов
+        velocity = next_velocity;
+        position = next_position;
+
         wrapAround();
     }
 
@@ -79,7 +91,7 @@ private:
         int total = 0;
         for (const Boid& other : boids) {
             float distance = (position - other.position).length();
-            if (&other != this && distance < 25 * 2) {
+            if (&other != this && distance < 75) {
                 steering = steering + other.velocity;
                 total++;
             }
@@ -100,13 +112,13 @@ private:
         int total = 0;
         for (const Boid& other : boids) {
             float distance = (position - other.position).length();
-            if (&other != this && distance < 25) {
+            if (&other != this && distance < 75) {
                 steering = steering + other.position;
                 total++;
             }
         }
         if (total > 0) {
-            steering = steering * (4.0f / total);
+            steering = steering * (1.0f / total);
             steering = steering - position; // Движение к среднему
             steering = steering.normalized() * max_speed;
             steering = steering - velocity; // Изменение направления
@@ -122,7 +134,7 @@ private:
         int total = 0;
         for (const Boid& other : boids) {
             float distance = (position - other.position).length();
-            if (&other != this && distance < 25) {
+            if (&other != this && distance < 75) {
                 Vec2 diff = position - other.position;
                 diff = diff.normalized() * (1.0f / distance); // Увеличение силы при близком расстоянии
                 steering = steering + diff;
@@ -194,8 +206,14 @@ while (!glfwWindowShouldClose(window)) {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // Первый проход: обновление boids
     for (Boid& boid : boids) {
         boid.update(boids);
+    }
+
+    // Второй проход: применение обновлений
+    for (Boid& boid : boids) {
+        boid.applyUpdates();
     }
 
     for (const Boid& boid : boids) {
