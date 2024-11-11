@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${vcpkgRoot}/x64-windows/include",
+                "C:/Users/Timofey/vcpkg/packages/glad_x64-windows/**",
+                "C:/Users/Timofey/vcpkg/packages/glfw3_x64-windows/**",
+                "C:/Users/Timofey/vcpkg/packages/imgui_x64-windows/**",
+                "${workspaceFolder}/cpp",
+                "C:/Users/Timofey/introboids-CodePion2r/cpp/**",
+                "C:/Users/Timofey/vcpkg/packages/opengl_x64-windows/**" 
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22000.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
